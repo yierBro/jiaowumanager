@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.jiaowumanager.mapper.CourseMapper">
+
+    <resultMap id="CourseMap" type="com.example.jiaowumanager.entity.Course">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="credit" property="credit"/>
+        <result column="course_task_id" property="courseTaskId"/>
+        <result column="course_assign_id" property="courseAssignId"/>
+
+        <result column="teacher_name" property="teacherName"/>
+        <result column="teacher_job_no" property="teacherJobNo"/>
+        <result column="classgroup_name" property="classgroupName"/>
+        <result column="classgroup_code" property="classgroupCode"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="CourseMap">
+        select co.id, co.name, co.credit, co.course_task_id, co.course_assign_id,
+        t.name as teacher_name, t.job_no as teacher_job_no,
+        cg.name as classgroup_name, cg.code as classgroup_code
+        from course co
+        join teacher t on t.id = co.course_task_id
+        join classgroup cg on cg.id = co.course_assign_id
+        where co.id = #{id}
+    </select>
+
+    <select id="selectAllWithJoin" resultMap="CourseMap">
+        select co.id, co.name, co.credit, co.course_task_id, co.course_assign_id,
+        t.name as teacher_name, t.job_no as teacher_job_no,
+        cg.name as classgroup_name, cg.code as classgroup_code
+        from course co
+        join teacher t on t.id = co.course_task_id
+        join classgroup cg on cg.id = co.course_assign_id
+        order by co.id desc
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into course(name, credit, course_task_id, course_assign_id)
+        values(#{name}, #{credit}, #{courseTaskId}, #{courseAssignId})
+    </insert>
+
+    <update id="update">
+        update course
+        set name = #{name},
+        credit = #{credit},
+        course_task_id = #{courseTaskId},
+        course_assign_id = #{courseAssignId}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from course where id = #{id}
+    </delete>
+
+</mapper>

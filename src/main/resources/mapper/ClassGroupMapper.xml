@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.jiaowumanager.mapper.ClassGroupMapper">
+
+    <resultMap id="ClassGroupMap" type="com.example.jiaowumanager.entity.ClassGroup">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="speciality_id" property="specialityId"/>
+
+        <result column="speciality_name" property="specialityName"/>
+        <result column="college_id" property="collegeId"/>
+        <result column="college_name" property="collegeName"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="ClassGroupMap">
+        select cg.id, cg.name, cg.code, cg.speciality_id,
+        s.name as speciality_name, s.college_id,
+        c.name as college_name
+        from classgroup cg
+        join speciality s on s.id = cg.speciality_id
+        join college c on c.id = s.college_id
+        where cg.id = #{id}
+    </select>
+
+    <select id="selectAllWithJoin" resultMap="ClassGroupMap">
+        select cg.id, cg.name, cg.code, cg.speciality_id,
+        s.name as speciality_name, s.college_id,
+        c.name as college_name
+        from classgroup cg
+        join speciality s on s.id = cg.speciality_id
+        join college c on c.id = s.college_id
+        order by cg.id desc
+    </select>
+
+    <select id="selectAll" resultType="com.example.jiaowumanager.entity.ClassGroup">
+        select id, name, code, speciality_id as specialityId
+        from classgroup
+        order by id desc
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into classgroup(name, code, speciality_id)
+        values(#{name}, #{code}, #{specialityId})
+    </insert>
+
+    <update id="update">
+        update classgroup
+        set name = #{name},
+        code = #{code},
+        speciality_id = #{specialityId}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from classgroup where id = #{id}
+    </delete>
+
+</mapper>

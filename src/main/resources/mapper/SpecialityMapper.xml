@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.jiaowumanager.mapper.SpecialityMapper">
+
+    <resultMap id="SpecialityMap" type="com.example.jiaowumanager.entity.Speciality">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="college_id" property="collegeId"/>
+        <result column="college_name" property="collegeName"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="SpecialityMap">
+        select s.id, s.name, s.code, s.college_id, c.name as college_name
+        from speciality s
+        join college c on c.id = s.college_id
+        where s.id = #{id}
+    </select>
+
+    <select id="selectAllWithCollege" resultMap="SpecialityMap">
+        select s.id, s.name, s.code, s.college_id, c.name as college_name
+        from speciality s
+        join college c on c.id = s.college_id
+        order by s.id desc
+    </select>
+
+    <select id="selectAll" resultType="com.example.jiaowumanager.entity.Speciality">
+        select id, name, code, college_id as collegeId
+        from speciality
+        order by id desc
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into speciality(name, code, college_id)
+        values(#{name}, #{code}, #{collegeId})
+    </insert>
+
+    <update id="update">
+        update speciality
+        set name = #{name},
+        code = #{code},
+        college_id = #{collegeId}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from speciality where id = #{id}
+    </delete>
+
+</mapper>

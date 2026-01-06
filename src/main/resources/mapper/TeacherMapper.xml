@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.jiaowumanager.mapper.TeacherMapper">
+
+    <resultMap id="TeacherMap" type="com.example.jiaowumanager.entity.Teacher">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="job_no" property="jobNo"/>
+        <result column="college_id" property="collegeId"/>
+        <result column="college_name" property="collegeName"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="TeacherMap">
+        select t.id, t.name, t.job_no, t.college_id, c.name as college_name
+        from teacher t
+        join college c on c.id = t.college_id
+        where t.id = #{id}
+    </select>
+
+    <select id="selectAllWithCollege" resultMap="TeacherMap">
+        select t.id, t.name, t.job_no, t.college_id, c.name as college_name
+        from teacher t
+        join college c on c.id = t.college_id
+        order by t.id desc
+    </select>
+
+    <select id="selectAll" resultType="com.example.jiaowumanager.entity.Teacher">
+        select id, name, job_no as jobNo, college_id as collegeId
+        from teacher
+        order by id desc
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into teacher(name, job_no, college_id)
+        values(#{name}, #{jobNo}, #{collegeId})
+    </insert>
+
+    <update id="update">
+        update teacher
+        set name = #{name},
+        job_no = #{jobNo},
+        college_id = #{collegeId}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from teacher where id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.jiaowumanager.mapper.CollegeMapper">
+
+    <resultMap id="CollegeMap" type="com.example.jiaowumanager.entity.College">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="created_at" property="createdAt"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="CollegeMap">
+        select id, name, code, created_at
+        from college
+        where id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="CollegeMap">
+        select id, name, code, created_at
+        from college
+        order by id desc
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into college(name, code)
+        values(#{name}, #{code})
+    </insert>
+
+    <update id="update">
+        update college
+        set name = #{name},
+        code = #{code}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from college where id = #{id}
+    </delete>
+
+</mapper>
